@@ -8,12 +8,7 @@
 #define DATAPIN    11
 #define CLOCKPIN   12
 Adafruit_DotStar strip(NUMPIXELS, DATAPIN, CLOCKPIN, DOTSTAR_BRG);
-//CRGB leds[300];
-
-#define BRIGHTNESS 20 // range of 0 - 255
-
-int      head  = 0, tail = -20; // Index of first 'on' and 'off' pixels
-uint32_t color = 0xFF0000;      // 'On' color (starts red)
+#define BRIGHTNESS 255 // range of 0 - 255
 
 //rgb
 int rainbowColors[] = {
@@ -21,11 +16,13 @@ int rainbowColors[] = {
   0xff8800,
   0xffff00,
   0x00ff00,
+  0x00FFFF,
   0x0000ff,
   0x8800ff,
   0xff00ff
 };
-int colorCount = 7;
+
+int colorCount = 8;
 int rainbowStartIndex = 0;
 int epilepsyValue = 0;
 
@@ -38,10 +35,21 @@ int epilepsyValue = 0;
 
 int animationMode = ANIMATION_OFF;
 
+
 // ****** WIFI THINGS ******
 
-const char WIFI_SSID[] = "IoT"; // WiFI ssid
-const char WIFI_PASS[] = "IoT4onderwijs"; //WiFI password
+
+// HVA NETWORK
+//const char WIFI_SSID[] = "IoT"; // WiFI ssid
+//const char WIFI_PASS[] = "IoT4onderwijs"; //WiFI password
+
+// iPhone hotspot
+const char WIFI_SSID[] = "iPhone van Bambi"; // WiFI ssid
+const char WIFI_PASS[] = "gradient"; //WiFI password
+
+// home wifi
+//const char WIFI_SSID[] = "Verdieping 3 Koelkast"; // WiFI ssid
+//const char WIFI_PASS[] = "Kutinternet123"; //WiFI password
 
 //WiFiSSLClient ipCloudStack;
 WiFiClient wifiClient;
@@ -76,16 +84,15 @@ String pingCommandTopic = "mddneon";//devices/" + deviceId + "/commands/ping/run
 void setup() {
   Serial.begin(115200);
 
-
   strip.begin(); // Initialize pins for output
   strip.setBrightness(BRIGHTNESS);
   for ( int i = 0; i < 40; i++) {
-    strip.setPixelColor(i, 10, 200, 40); // turn first 40 LEDs green at startup (one by one!)
+    strip.setPixelColor(i, 10, 200, 40); // turn first 40 LEDs pink at startup (one by one!)
     strip.show();
   }
 
   for ( int i = 0; i < NUMPIXELS; i++) {
-    strip.setPixelColor(i, 10, 200, 40); // turn all LEDs green at startup (all at once!)
+    strip.setPixelColor(i, 10, 200, 40); // turn all LEDs pink at startup (all at once!)
   }
   strip.show();
 
@@ -111,7 +118,7 @@ void messageReceived(String &topic, String &payload) {
 
     animationMode = ANIMATION_OFF;
 
-    if (payload.equals(" ")) { // make gradient (red to white ish) at space bar
+    if (payload.equals("g")) { // make gradient (red to white ish) at key g
       for ( int i = 0; i < NUMPIXELS; i++) {
         int r = (int)max(0, min(255, map(i, NUMPIXELS * 0.00, NUMPIXELS * 0.33, 0, 255)));
         int g = (int)max(0, min(255, map(i, NUMPIXELS * 0.33, NUMPIXELS * 0.66, 0, 255)));
@@ -121,69 +128,70 @@ void messageReceived(String &topic, String &payload) {
       strip.show();
     }
 
-    else if (payload.equals("1")) {
+    else if (payload.equals("1")) { // key press 1
       for ( int i = 0; i < NUMPIXELS; i++) {
-        strip.setPixelColor(i, 0, 255, 0); // turn LEDs green at key 1
-
+        strip.setPixelColor(i, 0x75c80a); // turn LEDs green
       } strip.show();
     }
 
-    else if (payload.equals("2")) {
+    else if (payload.equals("2")) { // key press 2
       for ( int i = 0; i < NUMPIXELS; i++) {
-        strip.setPixelColor(i, 10, 200, 40); // turn LEDs pink at key 2
-
+        strip.setPixelColor(i, 10, 200, 40); // turn LEDs pink
       } strip.show();
     }
 
-    else if (payload.equals("3")) {
+    else if (payload.equals("3")) { // key press 3
       for ( int i = 0; i < NUMPIXELS; i++) {
-        strip.setPixelColor(i, 72, 47, 247);  // turn LEDs blue at key 3
-
-      }
-      strip.show();
+        strip.setPixelColor(i, 72, 47, 247);  // turn LEDs blue
+      } strip.show();
     }
 
-    else if (payload.equals("9")) {
+    else if (payload.equals("9")) { // key press 9
       for ( int i = 0; i < NUMPIXELS; i++) {
-        strip.setPixelColor(i, 255, 255 , 255); // turn LEDs white at key 9
-
-      }
-      strip.show();
+        strip.setPixelColor(i, 255, 255 , 255); // turn LEDs white
+      } strip.show();
     }
 
     else if (payload.equals("0")) {
-      for ( int i = 0; i < NUMPIXELS; i++) {
-        strip.setPixelColor(i, 0, 0, 0);// turn LEDs off at key 0
-
-      }
-      strip.show();
+      for ( int i = 0; i < NUMPIXELS; i++) { // key press 0
+        strip.setPixelColor(i, 0, 0, 0);// turn LEDs off
+      } strip.show();
     }
 
-    else if (payload.equals("r")) {
+    else if (payload.equals("r")) { // key press r
       drawRainbow();
     }
 
-    else if (payload.equals("R")) {
+    else if (payload.equals("R")) { // key press R
       Serial.println(" ROTATING RAINBOW!" );
       animationMode = ANIMATION_ROTATING_RAINBOW;
     }
 
-    else if (payload.equals("n")) {
+    else if (payload.equals("n")) { // key press n
       animationMode = ANIMATION_OSCILLATING_RANDOMNESS;
     }
 
-    else if (payload.equals("s")) {
+    else if (payload.equals("s")) { // key press s
       animationMode = ANIMATION_SPARKLES;
     }
 
-    else if (payload.equals("S")) {
+    else if (payload.equals("S")) { // key press S
       animationMode = ANIMATION_SPARKLES_MINI;
     }
 
-    else if (payload.equals("e")) {
+    else if (payload.equals("e")) { // key press e
       animationMode = ANIMATION_EPILEPSY;
     }
-  }
+   }
+  
+    else {
+      String hex =  payload;
+        for ( int i = 0; i < NUMPIXELS; i++) {
+          strip.setPixelColor(i, 'hex');
+          } strip.show();
+    }
+
+      
 }
 
 
@@ -319,7 +327,7 @@ void drawRandomness(float blackChance) {
     if (random(10000.0f) < blackChance * 10000.0f) {
       r = g = b = 0;
     }
-    strip.setPixelColor(i, g, r , b); //
+    strip.setPixelColor(i, g, r, b); //
   }
   strip.show();
 }
@@ -344,7 +352,7 @@ void drawRainbow() {
     int r = col >> 16 & 0xff;
     int g = col >> 8 & 0xff;
     int b = col & 0xff;
-    strip.setPixelColor(i, g, r , b); //
+    strip.setPixelColor(i, g, r, b); //
   }
   strip.show();
 }
@@ -356,7 +364,7 @@ void drawRotatingRainbow() {
     int r = col >> 16 & 0xff;
     int g = col >> 8 & 0xff;
     int b = col & 0xff;
-    strip.setPixelColor(i, g, r , b); //
+    strip.setPixelColor(i, g, r, b); //
   }
   strip.show();
   rainbowStartIndex++;

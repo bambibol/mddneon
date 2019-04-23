@@ -1,0 +1,70 @@
+body{
+	background-color:#00001e;
+	color:white;
+	font-family: 'Shrikhand', cursive;
+	text-align:center;
+	font-size:15px;
+	margin: 0 auto;
+}
+
+h1{
+	font-size:4em;
+	letter-spacing: 2px;
+}
+
+h2{
+	font-size:1.3em;
+	letter-spacing: 1px;
+}
+
+button{
+	height:200px;
+	width:200px;
+	background-color:#f7941d;
+	color:black;
+	font-size:1.8em;
+	margin:20px;
+	border:solid 4px white;
+	font-family: 'Shrikhand', cursive;
+	letter-spacing: 0.5px;
+	display:inline-block;
+	float:left;
+}
+
+button:hover{
+	background-color:#f37021;
+}
+
+
+#neonbox{
+	max-width: 80%;
+	margin:0 auto;
+}
+
+#buttoncontainer{
+	text-align:center;
+	margin: 0 auto;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#colorpicker{
+	margin:0 auto;
+	display:inline-block;
+}
+
+#square{
+	/*is invisible*/
+}
+
+.jscolor{
+	width:200px;
+	height:200px;
+	text-align:center;
+	border:solid 4px white;
+	font-family: 'Shrikhand', cursive;
+	font-size:1.3em;
+	letter-spacing: 1px;
+}
