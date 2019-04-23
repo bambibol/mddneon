@@ -183,11 +183,9 @@ void messageReceived(String &topic, String &payload) {
       animationMode = ANIMATION_EPILEPSY;
     }
    }
-  
     else {
-      String hex =  payload;
         for ( int i = 0; i < NUMPIXELS; i++) {
-          strip.setPixelColor(i, 'hex');
+          strip.setPixelColor(i, ((char)payload[i]));
           } strip.show();
     }
 
