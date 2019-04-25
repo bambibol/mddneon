@@ -1,7 +1,7 @@
 body{
 	background-color:#00001e;
 	color:white;
-	font-family: helvetica;
+	font-family: 'Fjalla One', sans-serif;
 	text-align:center;
 	font-size:15px;
 	margin: 0 auto;
@@ -18,21 +18,23 @@ h2{
 }
 
 button{
-	height:200px;
+
+}
+
+.button:hover{
+	background-color:#f37021;
+}
+
+.button{
+		height:200px;
 	width:200px;
 	background-color:#f7941d;
 	color:black;
 	font-size:1.8em;
 	margin:20px;
 	border:solid 4px white;
-font-family: helvetica;
+	font-family: 'Fjalla One', sans-serif;
 	letter-spacing: 0.5px;
-	display:inline-block;
-	float:left;
-}
-
-button:hover{
-	background-color:#f37021;
 }
 
 
@@ -50,9 +52,16 @@ button:hover{
 	transform: translate(-50%, -50%);
 }
 
-#colorpicker{
-	margin:0 auto;
-	display:inline-block;
+#colorpickerinput{
+	font-family: 'Fjalla One', sans-serif;
+	height:200px;
+	width:200px;
+	background-color:#f7941d;
+	color:black;
+	font-size:1.8em;
+	margin:20px;
+	border:solid 4px white;
+	letter-spacing: 0.5px;
 }
 
 #square{
@@ -60,11 +69,8 @@ button:hover{
 }
 
 .jscolor{
-	width:200px;
-	height:200px;
 	text-align:center;
 	border:solid 4px white;
-font-family: helvetica;
 	font-size:1.3em;
 	letter-spacing: 1px;
 }

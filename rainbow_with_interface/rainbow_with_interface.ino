@@ -1,8 +1,7 @@
 #include <Adafruit_DotStar.h>
 #include <WiFiNINA.h>
 #include <MQTT.h>
-//#include <FastLED.h>
-//#include <SPI.h>
+#include <SPI.h>
 
 #define NUMPIXELS 300 // Number of LEDs in strip
 #define DATAPIN    11
@@ -253,9 +252,15 @@ void connect() {
     Serial.println(WIFI_SSID);
     // Connect to WPA/WPA2 network. Change this line if using open or WEP network:
     status = WiFi.begin(WIFI_SSID, WIFI_PASS);
-
-    // wait 2 seconds for connection:
+    for ( int i = 0; i < NUMPIXELS; i++) {
+      strip.setPixelColor(i, 0x000000); // turn off
+    }
+    strip.show();
     delay(1000);
+    for ( int i = 0; i < NUMPIXELS; i++) {
+      strip.setPixelColor(i, 10, 200, 40); // turn pink
+    }
+    strip.show();
   }
   Serial.print("\nconnecting...");
 

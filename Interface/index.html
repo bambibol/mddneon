@@ -4,12 +4,22 @@
   <meta charset = "UTF-8" />
   <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
     <script src="https://assets.shiftr.io/js/mqtt-2.9.0.js"></script>
-  <link rel="stylesheet" href="style.css">
-<!--   <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
- --></head>
+  
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+  <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+
+
+  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+</head>
 
 <body>
-<div id="wrapper">
+<div class="container">
 
 <!-- FLICKER NEON -->
 
@@ -81,17 +91,17 @@
     
   </defs>
     <g id="M">
-      <use fill="#000" filter="url(#glow)" xlink:href="#path-1"/>
-      <use fill="#82CADE" xlink:href="#path-1"/>
+      <use fill="#000" filter="url(#glow)" xlink:href="#path-3"/>
+      <use fill="#82CADE" xlink:href="#path-3"/>
     </g>
     <g id="middle">
+       <use fill="#000" filter="url(#glow)" xlink:href="#path-1"/>
+      <use id="neonletters" fill="#82CADE" xlink:href="#path-1"/>
+    </g>
+    <g id="D">
       <use fill="#000" filter="url(#glow)" xlink:href="#path-2"/>
       <use fill="#82CADE" xlink:href="#path-2"/>
     </g>
-    <g id="D">
-      <use fill="#000" filter="url(#glow)" xlink:href="#path-3"/>
-      <use fill="#82CADE" xlink:href="#path-3"/>
-  </g>
 </svg>
 </div>
 
@@ -101,36 +111,25 @@
 
 <div id="buttoncontainer">
 
-	<div id="allbuttons">
-	<button id="buttonR">Moving Rainbow!</button>
-	<button id="buttonE">Epilepsy!</button>
-	<button id="buttonr">Still rainbow!</button>
-	<button id="buttons">Sparkles!</button>
-	<button id="buttonS">Tiny sparkles!</button>
-	<button id="buttonn">Oscillating!</button>
-	</div>
+	<div id="allbuttons" class="row">
 
-  <div id="colorpicker">
-    <h2>Pick a color:</h2>
-    <input id="colorpickerinput" class="jscolor {onFineChange:'update(this)'}" value="f7941d"></input>
+<h1>COMMAND CENTER</h1>
+	<button id="buttonR" class="button" class="col-sm-4">Moving Rainbow!</button>
+	<button id="buttonE" class="button" class="col-sm-4">Epilepsy!</button>
+	<button id="buttons" class="button" class="col-sm-4">Sparkles!</button>
+	<button id="buttonS" class="button" class="col-sm-4">Tiny sparkles!</button>
+	<button id="buttonn" class="button" class="col-sm-4">Oscillating!</button>
+    <input id="colorpickerinput" class="button" class="col-sm-4" class="jscolor {onFineChange:'update(this)'}" value="f7941d"></input>
     <p id="square"></p>
 
     <script>
     function update(jscolor) {
-        //var client = mqtt.connect('wss://try:try@broker.shiftr.io', {
-        //  clientId: 'javascript'
-        //});
-        // 'jscolor' instance can be used as a string
         document.getElementById('square').style.backgroundColor = '#' + this.jscolor;
-        //console.log(jscolor.toString());
+        document.getElementById('neonletters').fill = this.jscolor;
         document.getElementById('square').dispatchEvent(new CustomEvent("change", {"detail":jscolor.toString()}));
-
-        // console.log('0x' + jscolor);
-        //client.publish('/mddneon', '0x' + jscolor);
     }
-  
     </script>
-  </div> 
+	</div>
 	
 </div>
 
