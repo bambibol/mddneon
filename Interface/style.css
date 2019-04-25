@@ -1,7 +1,7 @@
 body{
 	background-color:#00001e;
 	color:white;
-	font-family: 'Shrikhand', cursive;
+	font-family: helvetica;
 	text-align:center;
 	font-size:15px;
 	margin: 0 auto;
@@ -25,7 +25,7 @@ button{
 	font-size:1.8em;
 	margin:20px;
 	border:solid 4px white;
-	font-family: 'Shrikhand', cursive;
+font-family: helvetica;
 	letter-spacing: 0.5px;
 	display:inline-block;
 	float:left;
@@ -64,7 +64,7 @@ button:hover{
 	height:200px;
 	text-align:center;
 	border:solid 4px white;
-	font-family: 'Shrikhand', cursive;
+font-family: helvetica;
 	font-size:1.3em;
 	letter-spacing: 1px;
 }

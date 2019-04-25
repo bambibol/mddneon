@@ -39,4 +39,13 @@ $(function(){
       $('#buttonn').click(function(){
     client.publish('/mddneon', 'n');
   })
+
+      $('#square').on("change", function(e) {
+        //var t = target;
+        var msg = '0x'+e.detail;
+        //console.log(msg);
+        client.publish('/mddneon', msg);
+        //console.log("change!");
+      });
+
 })

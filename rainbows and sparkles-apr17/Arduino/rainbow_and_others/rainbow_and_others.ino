@@ -58,20 +58,21 @@ MQTTClient mqttClient;
 int status = WL_IDLE_STATUS;
 
 // Wia Cloud MQTT params
-char mqttCloudServer[]     = "broker.shiftr.io";
+char mqttCloudServer[]     = "broker.shiftr.io"; //iot.eclipse.org";//"
 int  mqttCloudPort         = 1883;
+
 
 // get this from the wia dashboard. it should start with `d_sk`
 char mqttCloudUsername[]   = "try";
 char mqttCloudPassword[]   = "try";
 
 // Wia API parameters
-char server[] = "broker.shiftr.io";
-const int mqttPort = 1883;  // Default MQTT port
+//char server[] = "broker.shiftr.io";
+//const int mqttPort = 1883;  // Default MQTT port
 
 // Topics
-String pingCommandTopic = "mddneon";//devices/" + deviceId + "/commands/ping/run";
-
+//String pingCommandTopic = "mddneon1";//devices/" + deviceId + "/commands/ping/run";
+#define pingCommandTopic "mddneon"
 
 /*
 
@@ -112,7 +113,7 @@ void messageReceived(String &topic, String &payload) {
   Serial.println("incoming: " + topic + " - " + payload);
 
   // listen to mddneon channel
-  if (topic.equals("mddneon")) {
+  if (topic.equals(pingCommandTopic)) {
     Serial.println("yeah!");
     Serial.println(payload);
 
@@ -182,14 +183,46 @@ void messageReceived(String &topic, String &payload) {
     else if (payload.equals("e")) { // key press e
       animationMode = ANIMATION_EPILEPSY;
     }
-   }
-    else {
-        for ( int i = 0; i < NUMPIXELS; i++) {
-          strip.setPixelColor(i, ((char)payload[i]));
-          } strip.show();
+
+    else if (payload.indexOf("0x") == 0) {
+      // color picker 
+      animationMode = ANIMATION_OFF;
+      String hexString = payload.substring(2);
+      Serial.print("hex received: ");
+      Serial.println(hexString);
+      
+      char hexStringAsCharArray[6];
+      hexString.toCharArray(hexStringAsCharArray, 7);
+      Serial.println(hexStringAsCharArray);
+
+      int rgb = (int)strtol(hexStringAsCharArray, NULL, 16);
+      Serial.println(rgb/256/256);
+      int r = rgb >> 16 & 0xff;
+      int g = rgb >> 8 & 0xff;
+      int b = rgb & 0xff;
+      
+      Serial.print("interpreted as: ");
+      Serial.print("red=");
+      Serial.print(r);
+      Serial.print(", green=");
+      Serial.print(g);
+      Serial.print(", blue=");
+      Serial.println(b);
+      
+      for ( int i = 0; i < NUMPIXELS; i++) {
+        strip.setPixelColor(i, g, r, b);
+      }
+      strip.show();
     }
 
-      
+  }
+
+
+  else {
+
+  }
+
+
 }
 
 
@@ -222,7 +255,7 @@ void connect() {
     status = WiFi.begin(WIFI_SSID, WIFI_PASS);
 
     // wait 2 seconds for connection:
-    delay(2000);
+    delay(1000);
   }
   Serial.print("\nconnecting...");
 
@@ -242,16 +275,21 @@ void connect() {
 
   Serial.println("start wia connect"); Serial.println();
 
-  while (!mqttClient.connect("mddneon", mqttCloudUsername, mqttCloudPassword)) {
-    Serial.print("*");
+  while (!mqttClient.connect(pingCommandTopic, mqttCloudUsername, mqttCloudPassword)) {
+    Serial.print("*: returnCode=");
+    Serial.print(mqttClient.returnCode());
+    Serial.print(" lastError=");
+    Serial.print(mqttClient.lastError());
+    Serial.println();
     delay(500);
   }
 
   Serial.println("Connected to MQTT");
 
+
   mqttClient.onMessage(messageReceived);
 
-  mqttClient.subscribe(pingCommandTopic);
+  mqttClient.subscribe(pingCommandTopic); 
 }
 
 
