@@ -38,7 +38,7 @@ int animationMode = ANIMATION_OFF;
 // ****** WIFI THINGS ******
 
 
-// HVA NETWORK
+// IoT NETWORK
 //const char WIFI_SSID[] = "IoT"; // WiFI ssid
 //const char WIFI_PASS[] = "IoT4onderwijs"; //WiFI password
 

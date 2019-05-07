@@ -2,20 +2,18 @@
 <head>
   <title>MDD Neon Sign Controller</title>
   <meta charset = "UTF-8" />
-  <script src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
-    <script src="https://assets.shiftr.io/js/mqtt-2.9.0.js"></script>
-  
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="style.css">
+  <script src="https://assets.shiftr.io/js/mqtt-2.9.0.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+  <script src="js/bootstrap.min.js"></script>
 
-
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap-colorpicker.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
 
 
-  <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script>
+  <link rel="stylesheet" href="css/style.css">
+  <!-- <script>document.write('<script src="http://' + (location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1"></' + 'script>')</script> -->
 </head>
 
 <body>
@@ -110,33 +108,64 @@
 <!-- BUTTONS -->
 
 <div id="buttoncontainer">
+<h1>COMMAND CENTER</h1>
+
 
 	<div id="allbuttons" class="row">
-
-<h1>COMMAND CENTER</h1>
 	<button id="buttonR" class="button" class="col-sm-4">Moving Rainbow!</button>
 	<button id="buttonE" class="button" class="col-sm-4">Epilepsy!</button>
 	<button id="buttons" class="button" class="col-sm-4">Sparkles!</button>
 	<button id="buttonS" class="button" class="col-sm-4">Tiny sparkles!</button>
-	<button id="buttonn" class="button" class="col-sm-4">Oscillating!</button>
+	<button id="buttonn" class="button"  class="col-sm-4">Oscillating!</button>
     <input id="colorpickerinput" class="button" class="col-sm-4" class="jscolor {onFineChange:'update(this)'}" value="f7941d"></input>
     <p id="square"></p>
 
-    <script>
-    function update(jscolor) {
-        document.getElementById('square').style.backgroundColor = '#' + this.jscolor;
-        document.getElementById('neonletters').fill = this.jscolor;
-        document.getElementById('square').dispatchEvent(new CustomEvent("change", {"detail":jscolor.toString()}));
-    }
-    </script>
+<!-- 
+
+<div id="cp2" class="input-group" class="col-sm-4">
+  <input type="text" class="form-control input-lg" value="#f7941d" />
+  <span class="input-group-append">
+    <span id="input-group-text" class="input-group-text colorpicker-input-addon">
+      <div>
+        <input type="text" id="pickerhex" value="#f7941d" />
+      </div>
+    </span>
+  </span>
+</div> -->
+<!-- 
+
+
+<script>
+  $(function () {
+    $('#cp2').colorpicker();
+    // $('#cp4').colorpicker({"color": "#f7941d"});
+    console.log('color changed!');
+  });
+</script> -->
+
+
+
+  <script>
+  function update(jscolor) {
+      document.getElementById('square').style.backgroundColor = '#' + this.jscolor;
+      // document.getElementById('neonletters').fill = this.jscolor;
+      document.getElementById('square').dispatchEvent(new CustomEvent("change", {"detail":jscolor.toString()}));
+  }
+  </script>
+
+
+
 	</div>
 	
 </div>
 
+  <!-- SCRIPTS -->
 
+<script src="https://code.jquery.com/jquery-3.4.0.js"  integrity="sha256-DYZMCC8HTC+QDr5QNaIcfR7VSPtcISykd+6eSmBW5qo="  crossorigin="anonymous"></script>
+<!-- <script src="js/bootstrap.bundle.min.js"></script>
+<script src="js/bootstrap-colorpicker.js"></script> -->
+<!-- <script src="js/jscolor.js"></script> -->
+<script src="js/mqtt.js"></script>
 
-
-<script src="javascript/jscolor.js"></script>
-  <script  type="text/javascript" src="javascript/mqtt.js"></script>
 </body>
 </html>
