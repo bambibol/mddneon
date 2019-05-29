@@ -29,14 +29,6 @@ Adafruit_NeoPixel strip(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 const char WIFI_SSID[] = "IoT"; // WiFI ssid
 const char WIFI_PASS[] = "IoT4onderwijs"; //WiFI password
 
-// iPhone hotspot
-//const char WIFI_SSID[] = "iPhone van Bambi"; // WiFI ssid
-//const char WIFI_PASS[] = "gradient"; //WiFI password
-
-// home wifi
-//const char WIFI_SSID[] = "Verdieping 3 Koelkast"; // WiFI ssid
-//const char WIFI_PASS[] = "Kutinternet123"; //WiFI password
-
 //WiFiSSLClient ipCloudStack;
 WiFiClient wifiClient;
 MQTTClient mqttClient;
@@ -80,7 +72,7 @@ void setup() {
 /*
 
 
-      MESSAGE PARSING
+      MESSAGE PARSING!
 
 
 */
@@ -92,12 +84,13 @@ void messageReceived(String &topic, String &payload) {
 
 
     if (payload.equals("R")) {
+//
+//      for (int i = 0; i < strip.numPixels(); i++) {
+//        strip.setPixelColor(i, strip.Color(255, 0, 0) );
+//      }
+//      strip.show();
 
-      for (int i = 0; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, strip.Color(255, 0, 0) );
-      }
-      strip.show();
-
+        rainbow();
     }
 
     else if (payload.equals("e")) {
@@ -163,7 +156,7 @@ void messageReceived(String &topic, String &payload) {
 
 /*
 
-   CONNECT
+   CONNECTING!
 
 */
 
@@ -225,7 +218,7 @@ void connect_to_mqtt() {
 /*
 
 
-   LOOP
+   LOOP!
 
 
 */
@@ -254,7 +247,7 @@ void test_sequence() {
   for (int i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, 255, 0 , 0);
     strip.show();
-    delay(25);
+    delay(10);
   }
 
   // test GREEN
@@ -262,7 +255,7 @@ void test_sequence() {
   for (int i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, 0, 255, 0);
     strip.show();
-    delay(25);
+    delay(10);
   }
 
   // test BLUE
@@ -270,7 +263,7 @@ void test_sequence() {
   for (int i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, 0, 0, 255);
     strip.show();
-    delay(25);
+    delay(10);
   }
 
   // test WHITE
@@ -278,7 +271,7 @@ void test_sequence() {
   for (int i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, 255, 255, 255);
     strip.show();
-    delay(25);
+    delay(10);
   }
   
   // turn entire strip off
@@ -291,14 +284,14 @@ void test_sequence() {
 /*
 
 
-   SOME FUN NEOPIXEL COLOR MODES
+   SOME FUN NEOPIXEL COLOR MODES!
 
 
 */
 
 
 // Rainbow cycle along whole strip. Pass delay time (in ms) between frames.
-void rainbow(int wait) {
+void rainbow() { //(int wait)
   // Hue of first pixel runs 5 complete loops through the color wheel.
   // Color wheel has a range of 65536 but it's OK if we roll over, so
   // just count from 0 to 5*65536. Adding 256 to firstPixelHue each time
@@ -315,9 +308,11 @@ void rainbow(int wait) {
       // is passed through strip.gamma32() to provide 'truer' colors
       // before assigning to each pixel:
       strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
+      strip.show(); // Update strip with new contents
     }
-    strip.show(); // Update strip with new contents
-    delay(wait);  // Pause for a moment
+    
+//    delay(25);
+//    delay(wait);  // Pause for a moment
   }
 }
 
