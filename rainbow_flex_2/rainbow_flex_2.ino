@@ -18,6 +18,31 @@
 Adafruit_NeoPixel strip(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 #define BRIGHTNESS 200 // range of 0 - 255
 
+
+int rainbowColors[] = {
+  0xff0000,
+  0xff8800,
+  0xffff00,
+  0x00ff00,
+  0x00FFFF,
+  0x0000ff,
+  0x8800ff,
+  0xff00ff
+};
+
+int colorCount = 8;
+int rainbowStartIndex = 0;
+int epilepsyValue = 0;
+
+#define ANIMATION_OFF 0
+#define ANIMATION_ROTATING_RAINBOW 1
+#define ANIMATION_OSCILLATING_RANDOMNESS 2
+#define ANIMATION_SPARKLES 3
+#define ANIMATION_SPARKLES_MINI 4
+#define ANIMATION_EPILEPSY 5
+
+int animationMode = ANIMATION_OFF;
+
 /*
 
 
@@ -26,16 +51,16 @@ Adafruit_NeoPixel strip(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
 */
 // IoT NETWORK
-const char WIFI_SSID[] = "IoT"; // WiFI ssid
-const char WIFI_PASS[] = "IoT4onderwijs"; //WiFI password
+//const char WIFI_SSID[] = "IoT"; // WiFI ssid
+//const char WIFI_PASS[] = "IoT4onderwijs"; //WiFI password
 
 // iPhone hotspot
 //const char WIFI_SSID[] = "iPhone van Bambi"; // WiFI ssid
 //const char WIFI_PASS[] = "gradient"; //WiFI password
 
 // home wifi
-//const char WIFI_SSID[] = "Verdieping 3 Koelkast"; // WiFI ssid
-//const char WIFI_PASS[] = "Kutinternet123"; //WiFI password
+const char WIFI_SSID[] = "Verdieping 3 Koelkast"; // WiFI ssid
+const char WIFI_PASS[] = "Kutinternet123"; //WiFI password
 
 //WiFiSSLClient ipCloudStack;
 WiFiClient wifiClient;
@@ -90,44 +115,40 @@ void messageReceived(String &topic, String &payload) {
   // listen to mddneon channel
   if (topic.equals(pingCommandTopic)) {
 
+    animationMode = ANIMATION_OFF;
 
-    if (payload.equals("R")) {
-
-      for (int i = 0; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, strip.Color(255, 0, 0) );
-      }
-      strip.show();
-
-    }
-
-    else if (payload.equals("e")) {
+  if (payload.equals("e")) {
       for (int i = 0; i < strip.numPixels(); i++) {
         strip.setPixelColor(i, strip.Color(255, 140, 0) );
       }
       strip.show();
     }
 
-    else if (payload.equals("r")) { // key press r
-
+    else if (payload.equals("R")) { // key press R
+//      rainbow(25);
+      animationMode = ANIMATION_ROTATING_RAINBOW;
     }
 
     else if (payload.equals("n")) { // key press n
-
+      animationMode = ANIMATION_OSCILLATING_RANDOMNESS;
     }
 
     else if (payload.equals("s")) { // key press s
-
+      animationMode = ANIMATION_SPARKLES;
     }
 
     else if (payload.equals("S")) { // key press S
-
+      animationMode = ANIMATION_SPARKLES_MINI;
     }
 
     else if (payload.equals("e")) { // key press e
-
+      animationMode = ANIMATION_EPILEPSY;
     }
 
     else if (payload.indexOf("0x") == 0) {
+
+      animationMode = ANIMATION_OFF;
+
       // color picker
       String hexString = payload.substring(2);
       //      Serial.print("hex received: ");
@@ -236,6 +257,24 @@ void loop() {
   if (!wifiClient.connected()) {
     connect_to_mqtt();
   }
+
+  switch (animationMode) {
+    case ANIMATION_ROTATING_RAINBOW:
+      rainbow(25);
+      break;
+    case ANIMATION_OSCILLATING_RANDOMNESS:
+      drawOscillatingRandomness();
+      break;
+    case ANIMATION_SPARKLES:
+      drawRandomness(0.95f);
+      break;
+    case ANIMATION_SPARKLES_MINI:
+      drawRandomness(0.995f);
+      break;
+    case ANIMATION_EPILEPSY:
+      drawEpilepsy();
+      break;
+  }
 }
 
 
@@ -254,7 +293,7 @@ void test_sequence() {
   for (int i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, 255, 0 , 0);
     strip.show();
-    delay(25);
+    delay(10);
   }
 
   // test GREEN
@@ -262,7 +301,7 @@ void test_sequence() {
   for (int i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, 0, 255, 0);
     strip.show();
-    delay(25);
+    delay(10);
   }
 
   // test BLUE
@@ -270,7 +309,7 @@ void test_sequence() {
   for (int i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, 0, 0, 255);
     strip.show();
-    delay(25);
+    delay(10);
   }
 
   // test WHITE
@@ -278,14 +317,114 @@ void test_sequence() {
   for (int i = 0; i < strip.numPixels(); i++) {
     strip.setPixelColor(i, 255, 255, 255);
     strip.show();
-    delay(25);
+    delay(10);
   }
-  
+
   // turn entire strip off
   blank();
   Serial.println("rrrrrrrready for take off!");
 }
 
+
+
+/*
+
+
+   MARCUS'S RANDOM MAGIC
+
+
+*/
+
+
+void drawEpilepsy() {
+  epilepsyValue = 255 - epilepsyValue;
+  for ( int i = 0; i < NUMPIXELS; i++) {
+    strip.setPixelColor(i, epilepsyValue, epilepsyValue, epilepsyValue); //
+  }
+  strip.show();
+}
+
+void drawOscillatingRandomness() {
+  float cyclePercentage = (millis() % 5000) / 5000.0f; // 0..1
+  float triangle = cyclePercentage < 0.5 ? (cyclePercentage * 2) : (1 - (cyclePercentage - 0.5) * 2); // 0..1..0
+  drawRandomness(triangle);
+}
+
+
+void drawRandomness(float blackChance) {
+  for ( int i = 0; i < NUMPIXELS; i++) {
+    int col = getRainbowColor( (float)i / (NUMPIXELS - 1) );
+    int r = (int)(random(255));
+    int g = (int)(random(255));
+    int b = (int)(random(255));
+
+    if (random(10000.0f) < blackChance * 10000.0f) {
+      r = g = b = 0;
+    }
+    strip.setPixelColor(i, g, r, b); //
+  }
+  strip.show();
+}
+
+/*
+
+
+   RAINBOW STUFF
+
+
+*/
+
+
+
+void drawRainbow() {
+  for ( int i = 0; i < NUMPIXELS; i++) {
+    int col = getRainbowColor( (float)i / (NUMPIXELS - 1) );
+    int r = col >> 16 & 0xff;
+    int g = col >> 8 & 0xff;
+    int b = col & 0xff;
+    strip.setPixelColor(i, g, r, b); //
+  }
+  strip.show();
+}
+
+void drawRotatingRainbow() {
+  for ( int i = 0; i < NUMPIXELS; i++) {
+    int index = (i + rainbowStartIndex) % NUMPIXELS;
+    int col = getRainbowColor( (float)index / (NUMPIXELS - 1) );
+    int r = col >> 16 & 0xff;
+    int g = col >> 8 & 0xff;
+    int b = col & 0xff;
+    strip.setPixelColor(i, g, r, b); //
+  }
+  strip.show();
+  rainbowStartIndex++;
+  rainbowStartIndex %= NUMPIXELS;
+  Serial.println(rainbowStartIndex);
+}
+
+int getRainbowColor(float percentage)  {
+  percentage = max(0, min(1, percentage));
+
+  int index0 = (int)floor(colorCount * percentage);
+  int index1 = min(colorCount - 1, index0 + 1);
+
+  float p1 = colorCount * percentage - index0; //0: use col0, 1: use col1
+  float p0 = 1 - p1;
+  int col0 = rainbowColors[index0];
+  int col1 = rainbowColors[index1];
+  int r0 = col0 >> 16 & 0xff;
+  int g0 = col0 >> 8 & 0xff;
+  int b0 = col0 & 0xff;
+  int r1 = col1 >> 16 & 0xff;
+  int g1 = col1 >> 8 & 0xff;
+  int b1 = col1 & 0xff;
+
+  int r = (int)(r0 * p0 + r1 * p1);
+  int g = (int)(g0 * p0 + g1 * p1);
+  int b = (int)(b0 * p0 + b1 * p1);
+
+  return r << 16 | g << 8 | b;
+}
 
 
 /*
