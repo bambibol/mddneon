@@ -16,7 +16,7 @@
 #define LED_PIN     6
 #define NUMPIXELS  60
 Adafruit_NeoPixel strip(NUMPIXELS, LED_PIN, NEO_GRB + NEO_KHZ800);
-#define BRIGHTNESS 50 // range of 0 - 255
+#define BRIGHTNESS 200 // range of 0 - 255
 
 
 
@@ -57,7 +57,6 @@ int animationMode = ANIMATION_OFF;
 //const char WIFI_SSID[] = "IoT"; // WiFI ssid
 //const char WIFI_PASS[] = "!HVAIOT!"; //WiFI password
 
-<<<<<<< HEAD:rainbow_flex_mosquitto/rainbow_flex_mosquitto.ino
 // iPhone hotspot
 //const char WIFI_SSID[] = "iPhone van Bambi"; // WiFI ssid
 //const char WIFI_PASS[] = "gradient"; //WiFI password
@@ -66,8 +65,6 @@ int animationMode = ANIMATION_OFF;
 const char WIFI_SSID[] = "Verdieping 3 Koelkast"; // WiFI ssid
 const char WIFI_PASS[] = "Kutinternet123"; //WiFI password
 
-=======
->>>>>>> 134a6c00a715374060c974d4bed920090910120e:rainbow_flex_2/rainbow_flex_2.ino
 //WiFiSSLClient ipCloudStack;
 WiFiClient wifiClient;
 MQTTClient mqttClient;
@@ -111,7 +108,7 @@ void setup() {
 /*
 
 
-      MESSAGE PARSING!
+      MESSAGE PARSING
 
 
 */
@@ -123,28 +120,7 @@ void messageReceived(String &topic, String &payload) {
 
     animationMode = ANIMATION_OFF;
 
-<<<<<<< HEAD:rainbow_flex_mosquitto/rainbow_flex_mosquitto.ino
-    if (payload.equals("E")) {
-=======
-    if (payload.equals("R")) {
-//
-//      for (int i = 0; i < strip.numPixels(); i++) {
-//        strip.setPixelColor(i, strip.Color(255, 0, 0) );
-//      }
-//      strip.show();
-
-        rainbow();
-    }
-
-    else if (payload.equals("e")) {
->>>>>>> 134a6c00a715374060c974d4bed920090910120e:rainbow_flex_2/rainbow_flex_2.ino
-      for (int i = 0; i < strip.numPixels(); i++) {
-        strip.setPixelColor(i, strip.Color(255, 140, 0) );
-      }
-      strip.show();
-    }
-
-    else if (payload.equals("R")) { // key press R
+     if (payload.equals("R")) { // key press R
       animationMode = ANIMATION_ROTATING_RAINBOW;
     }
 
@@ -153,7 +129,8 @@ void messageReceived(String &topic, String &payload) {
     }
 
     else if (payload.equals("s")) { // key press s
-      animationMode = ANIMATION_SPARKLES;
+      //      animationMode = ANIMATION_SPARKLES
+      SnowSparkle(0x10, 0x10, 0x10, 20, 200);
     }
 
     else if (payload.equals("S")) { // key press S
@@ -161,7 +138,7 @@ void messageReceived(String &topic, String &payload) {
     }
 
     else if (payload.equals("e")) { // key press e
-//      meteorRain(0xff, 0xff, 0xff, 10, 64, true, 30);
+      meteorRain(0xff, 0xbe, 0x5c, 10, 64, true, 40);
     }
 
     else if (payload.indexOf("0x") == 0) {
@@ -203,7 +180,7 @@ void messageReceived(String &topic, String &payload) {
 
 /*
 
-   CONNECTING!
+   CONNECT
 
 */
 
@@ -265,7 +242,7 @@ void connect_to_mqtt() {
 /*
 
 
-   LOOP!
+   LOOP
 
 
 */
@@ -279,7 +256,7 @@ void loop() {
 
   switch (animationMode) {
     case ANIMATION_ROTATING_RAINBOW:
-      rainbow(25);
+      rainbow();
       break;
     case ANIMATION_OSCILLATING_RANDOMNESS:
       drawOscillatingRandomness();
@@ -349,7 +326,6 @@ void test_sequence() {
 /*
 
 
-<<<<<<< HEAD:rainbow_flex_mosquitto/rainbow_flex_mosquitto.ino
    MARCUS'S RANDOM MAGIC
 
 
@@ -451,16 +427,13 @@ int getRainbowColor(float percentage)  {
 
 
    SOME FUN NEOPIXEL COLOR MODES
-=======
-   SOME FUN NEOPIXEL COLOR MODES!
->>>>>>> 134a6c00a715374060c974d4bed920090910120e:rainbow_flex_2/rainbow_flex_2.ino
 
 
 */
 
 
 // Rainbow cycle along whole strip. Pass delay time (in ms) between frames.
-void rainbow() { //(int wait)
+void rainbow() {
   // Hue of first pixel runs 5 complete loops through the color wheel.
   // Color wheel has a range of 65536 but it's OK if we roll over, so
   // just count from 0 to 5*65536. Adding 256 to firstPixelHue each time
@@ -477,60 +450,85 @@ void rainbow() { //(int wait)
       // is passed through strip.gamma32() to provide 'truer' colors
       // before assigning to each pixel:
       strip.setPixelColor(i, strip.gamma32(strip.ColorHSV(pixelHue)));
-      strip.show(); // Update strip with new contents
     }
-    
-//    delay(25);
-//    delay(wait);  // Pause for a moment
+    strip.show(); // Update strip with new contents
+    delay(25);  // Pause for a moment
   }
 }
-//
-//void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {
-////  setAll(0, 0, 0);
-//
-//  for (int i = 0; i < NUMPIXELS + NUMPIXELS; i++) {
-//
-//
-//    // fade brightness all LEDs one step
-//    for (int j = 0; j < NUMPIXELS; j++) {
-//      if ( (!meteorRandomDecay) || (random(10) > 5) ) {
-//        fadeToBlack(j, meteorTrailDecay );
-//      }
-//    }
-//
-//    // draw meteor
-//    for (int j = 0; j < meteorSize; j++) {
-//      if ( ( i - j < NUMPIXELS) && (i - j >= 0) ) {
-//        setPixel(i - j, red, green, blue);
-//      }
-//    }
-//
-//    showStrip();
-//    delay(SpeedDelay);
-//  }
-//}
-//
-//void fadeToBlack(int ledNo, byte fadeValue) {
-//#ifdef ADAFRUIT_NEOPIXEL_H
-//  // NeoPixel
-//  uint32_t oldColor;
-//  uint8_t r, g, b;
-//  int value;
-//
-//  oldColor = strip.getPixelColor(ledNo);
-//  r = (oldColor & 0x00ff0000UL) >> 16;
-//  g = (oldColor & 0x0000ff00UL) >> 8;
-//  b = (oldColor & 0x000000ffUL);
-//
-//  r = (r <= 10) ? 0 : (int) r - (r * fadeValue / 256);
-//  g = (g <= 10) ? 0 : (int) g - (g * fadeValue / 256);
-//  b = (b <= 10) ? 0 : (int) b - (b * fadeValue / 256);
-//
-//  strip.setPixelColor(ledNo, r, g, b);
-//#endif
-//#ifndef ADAFRUIT_NEOPIXEL_H
-//  // FastLED
-//  leds[ledNo].fadeToBlackBy( fadeValue );
-//#endif
-//}
+
+
+void meteorRain(byte red, byte green, byte blue, byte meteorSize, byte meteorTrailDecay, boolean meteorRandomDecay, int SpeedDelay) {
+  setAll(0, 0, 0);
+
+  for (int i = 0; i < NUMPIXELS + NUMPIXELS; i++) {
+
+    // fade brightness all LEDs one step
+    for (int j = 0; j < NUMPIXELS; j++) {
+      if ( (!meteorRandomDecay) || (random(10) > 5) ) {
+        fadeToBlack(j, meteorTrailDecay );
+      }
+    }
+
+    // draw meteor
+    for (int j = 0; j < meteorSize; j++) {
+      if ( ( i - j < NUMPIXELS) && (i - j >= 0) ) {
+        setPixel(i - j, red, green, blue);
+      }
+    }
+
+    showStrip();
+    delay(SpeedDelay);
+  }
+}
+
+
+void SnowSparkle(byte red, byte green, byte blue, int SparkleDelay, int SpeedDelay) {
+  setAll(red, green, blue);
+
+  int Pixel = random(NUMPIXELS);
+  setPixel(Pixel, 0xff, 0xff, 0xff);
+  showStrip();
+  delay(SparkleDelay);
+  setPixel(Pixel, red, green, blue);
+  showStrip();
+  delay(SpeedDelay);
+}
+
+
+
+void fadeToBlack(int ledNo, byte fadeValue) {
+  uint32_t oldColor;
+  uint8_t r, g, b;
+  int value;
+
+  oldColor = strip.getPixelColor(ledNo);
+  r = (oldColor & 0x00ff0000UL) >> 16;
+  g = (oldColor & 0x0000ff00UL) >> 8;
+  b = (oldColor & 0x000000ffUL);
+
+  r = (r <= 10) ? 0 : (int) r - (r * fadeValue / 256);
+  g = (g <= 10) ? 0 : (int) g - (g * fadeValue / 256);
+  b = (b <= 10) ? 0 : (int) b - (b * fadeValue / 256);
+
+  strip.setPixelColor(ledNo, r, g, b);
+}
+
+void showStrip() {
+  strip.show();
+}
+
+void setPixel(int Pixel, byte red, byte green, byte blue) {
+
+  strip.setPixelColor(Pixel, strip.Color(red, green, blue));
+
+}
+
+void setAll(byte red, byte green, byte blue) {
+  for (int i = 0; i < NUMPIXELS; i++ ) {
+    setPixel(i, red, green, blue);
+  }
+  showStrip();
+}
+
+
 
