@@ -1,15 +1,77 @@
 * {
-	box-sizing: border-box; 
+	box-sizing: border-box;
 }
-
 body {
 	margin: 0;
-	background-color:#00001e;
+	/*background: #000030;*/
+	/* Old browsers */
+	background: -moz-linear-gradient(-45deg, #000030 0%, #000000 100%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, #000030 0%, #000000 100%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, #000030 0%, #000000 100%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	font-family: 'Fjalla One', sans-serif;
-	text-align:center;
-	font-size:15px;
+	text-align: center;
+	font-size: 15px;
+}
+h1 {
+	font-size: 3em;
+	letter-spacing: 2px;
+	color: white;
+	margin: 0 auto;
+	padding-top: 10px;
+	padding-bottom: 20px;
+	max-width: 80%;
 }
 
+
+
+/* NEON FLICKERS */
+
+
+
+@keyframes flicker {
+	0% { opacity: 1;}
+	3% { opacity: 0.4;}
+	6% { opacity: 1;}
+	7% { opacity: 0.4;}
+	8% { opacity: 1;}
+	9% { opacity: 0.4;}
+	10% { opacity: 1;}
+	99% { opacity: 1;}
+	100% { opacity: 1;}
+}
+
+#M {
+	animation: flicker 2s infinite 5s step-end;
+}
+
+#middle {
+	animation: flicker 6s infinite 6s step-end;
+}
+
+#D {
+	animation: flicker 5s infinite 10s step-end;
+}
+
+
+
+/* TOGGLE */
+
+
+
+#off {
+	display: none;
+}
+
+#on {
+	display: block;
+}
+
+
+
+/* FLEX BOX */
 
 
 
@@ -18,17 +80,16 @@ body {
 	min-height: calc(100vh - 35vh);
 }
 
-#main > article {
+#main>article {
 	flex: 1;
 }
 
-#main > nav, 
-#main > aside {
+#main>nav, #main>aside {
 	flex: 0 0 20vw;
 	display: block;
 }
 
-#main > nav {
+#main>nav {
 	order: -1;
 }
 
@@ -39,143 +100,112 @@ header, article, nav, aside {
 header {
 	max-height: 35vh;
 }
-  
+
+
+
+/* BUTTONS */
+
+
+
 .cards {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
-  	justify-content: center;
+	justify-content: center;
 	flex-direction: row;
 	max-height: 100vh;
-
 }
 
-.button{
-	background-color:#f7941d;
+.button {
+	/*background: #f7941d;*/
+	/* Old browsers */
+	background: -moz-linear-gradient(-45deg, #f7941d 0%, #f37021 100%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, #f7941d 0%, #f37021 100%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, #f7941d 0%, #f37021 100%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 	margin: 5px;
 	border: 3px solid #fff;
 	max-width: 23vw;
-	height:200px;
-	width:200px;
-	font-size:2em;
+	height: 200px;
+	width: 200px;
+	font-size: 2em;
 	color: #00001e;
 }
 
-.button:hover{
-	background-color:#f37021;
+.button:hover {
+	/*background: #f37021;*/
+	/* Old browsers */
+	background: -moz-linear-gradient(-45deg, #f37021 0%, #f7941d 100%);
+	/* FF3.6-15 */
+	background: -webkit-linear-gradient(-45deg, #f37021 0%, #f7941d 100%);
+	/* Chrome10-25,Safari5.1-6 */
+	background: linear-gradient(135deg, #f37021 0%, #f7941d 100%);
+	/* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
-
-.fa{
-	font-size:50px;
-	color:#00001e;
+.fa {
+	font-size: 50px;
+	color: #00001e;
 }
 
-#neonbox{
+#neonbox {
 	max-width: 50%;
-	margin:0 auto;
-}
-
-h1{
-	font-size:3em;
-	letter-spacing: 2px;
-	color:white;
 	margin: 0 auto;
-	padding-top:10px;
-	padding-bottom:20px;	
-	max-width:80%;
-
 }
 
 
-/*color picker things*/
 
-#square{
+/* COLOR PICKER */
+
+
+
+#square {
 	/*is invisible*/
 }
 
-.jscolor{
-	text-align:center;
+.jscolor {
+	text-align: center;
 }
 
-.input-lg{
-/*	is invisible*/	
-	height:0px;
-	width:0px;
-	margin:0 auto;
-	padding:0;
+.input-lg {
+	/*	is invisible*/
+	height: 0px;
+	width: 0px;
+	margin: 0 auto;
+	padding: 0;
 	visibility: hidden;
 }
 
 
-#pickerhex{
-	display:flex;
-	text-align: center;
-	margin: 0 auto;
-	font-size:1.8em;
-	width:150px;
-	border:none;
-	background-color:inherit;
-}
 
-#colorpickerinput{
-	font-family: 'Fjalla One', sans-serif;
-	height:200px;
-	width:200px;
-	background-color:#f7941d;
-	color:black;
-	font-size:1.8em;
-	margin:20px;
-	border:solid 4px white;
-	letter-spacing: 0.5px;
-}
-
-.input-group-text{
-	height:200px;
-	width:200px;
-	margin:0 auto;
-	border:solid 4px white;
-	background-color:initial;
-	border-radius: 0;
-}
-
-.colorpicker-input-addon i{
-	height:180px;
-	width:200px;
-}
-
-.colorpicker-input-addon:before{
-	width:0px;
-	height:0px;
-}
+/* MOBILE SCREENS */
 
 
 
-/* MOBILE EDITS */
-
-@media screen and (max-width: 768px) {
-	#main > nav, 
-	#main > aside {
+@media screen and (max-width: 1080px) {
+	#main>nav, #main>aside {
 		display: none;
 	}
 
-	body{
-		font-size:2em;
+	body {
+		font-size: 2em;
 	}
 
-	#neonbox{
+	#neonbox {
 		max-width: 80%;
-		margin:0 auto;
+		margin: 0 auto;
 	}
 
-	.button{
+	.button {
 		max-width: none;
-		width:40vw;
-		height:20vh;
-		font-size:3em;
+		width: 40vw;
+		height: 20vh;
+		font-size: 3em;
 	}
 
-	.fa{
-		font-size:100px;
+	.fa {
+		font-size: 100px;
 	}
 }
