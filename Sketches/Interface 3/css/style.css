@@ -1,0 +1,116 @@
+body{
+	background-color:#00001e;
+	color:white;
+	font-family: 'Fjalla One', sans-serif;
+	text-align:center;
+	font-size:15px;
+	margin: 0 auto;
+}
+
+h1{
+	font-size:4em;
+	letter-spacing: 2px;
+}
+
+h2{
+	font-size:1.3em;
+	letter-spacing: 1px;
+}
+
+
+#buttonbox{
+background-color:white;
+margin:0 auto;
+max-height:60%;
+}
+
+.button:hover{
+	background-color:#f37021;
+}
+
+.button{
+	height:200px;
+	width:200px;
+	background-color:#f7941d;
+	color:black;
+	font-size:1.8em;
+	margin:20px;
+	border:solid 4px white;
+	font-family: 'Fjalla One', sans-serif;
+	letter-spacing: 0.5px;
+}
+
+
+#neonbox{
+	max-width: 80%;
+	margin:0 auto;
+}
+
+#buttoncontainer{
+	text-align:center;
+	margin: 0 auto;
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+}
+
+#colorpickerinput{
+	font-family: 'Fjalla One', sans-serif;
+	height:200px;
+	width:200px;
+	background-color:#f7941d;
+	color:black;
+	font-size:1.8em;
+	margin:20px;
+	border:solid 4px white;
+	letter-spacing: 0.5px;
+}
+
+.input-group-text{
+	height:200px;
+	width:200px;
+	margin:0 auto;
+	border:solid 4px white;
+	background-color:initial;
+	border-radius: 0;
+}
+
+.colorpicker-input-addon i{
+	height:180px;
+	width:200px;
+}
+
+.colorpicker-input-addon:before{
+	width:0px;
+	height:0px;
+}
+
+.input-lg{
+/*	is invisible*/	
+	height:0px;
+	width:0px;
+	margin:0 auto;
+	padding:0;
+	visibility: hidden;
+}
+
+
+#pickerhex{
+	display:flex;
+	text-align: center;
+	margin: 0 auto;
+	font-size:1.8em;
+	width:150px;
+	border:none;
+	background-color:inherit;
+}
+
+
+#square{
+	/*is invisible*/
+}
+
+.jscolor{
+	text-align:center;
+}
