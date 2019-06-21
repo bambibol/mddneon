@@ -199,13 +199,18 @@ header {
 	}
 
 	.button {
-		max-width: none;
+		/*max-width: none;*/
 		width: 40vw;
 		height: 20vh;
-		font-size: 3em;
+		font-size: 2em;
 	}
 
 	.fa {
 		font-size: 100px;
+	}
+
+	.icons img{
+		size:50%;
+
 	}
 }

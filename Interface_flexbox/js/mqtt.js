@@ -11,24 +11,24 @@ $(function() {
     console.log('new message:', topic, message.toString());
   });
   // buttons:
-  $('#buttonR').click(function() {
+  $('#buttonRainbow').click(function() {
     client.publish('/mddneon', 'R');
   })
-  $('#buttonE').click(function() {
-    client.publish('/mddneon', 'e');
+  $('#buttonMeteor').click(function() {
+    client.publish('/mddneon', 'M');
   })
-  $('#buttonr').click(function() {
-    client.publish('/mddneon', 'r');
+  $('#buttonConfetti').click(function() {
+    client.publish('/mddneon', 'C');
   })
-  $('#buttons').click(function() {
-    client.publish('/mddneon', 's');
+  $('#buttonGlitter').click(function() {
+    client.publish('/mddneon', 'G');
   })
-  $('#buttonS').click(function() {
-    client.publish('/mddneon', 'S');
+  $('#buttonBouncy').click(function() {
+    client.publish('/mddneon', 'B');
   })
-  $('#buttonn').click(function() {
-    client.publish('/mddneon', 'n');
-  })
+  // $('#buttonn').click(function() {
+  //   client.publish('/mddneon', 'n');
+  // })
   // color picker:
   $('#square').on("change", function(e) {
     var msg = '0x' + e.detail;
