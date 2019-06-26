@@ -1,11 +1,12 @@
 // MQTT LISTENER
+
 $(function() {
   var client = mqtt.connect('wss://try:try@broker.shiftr.io', {
     clientId: 'javascript'
   });
   client.subscribe('/mddneon');
   client.on('connect', function() {
-    console.log('client 2 has connected!');
+    console.log('MDD Neon Sign has connected!');
   });
   client.on('message', function(topic, message) {
     console.log('new message:', topic, message.toString());
@@ -35,6 +36,8 @@ $(function() {
     client.publish('/mddneon', msg);
   });
 })
+
+// on off toggle
 
 $(function toggle() {
   var x = document.getElementById("on");

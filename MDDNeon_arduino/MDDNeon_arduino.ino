@@ -12,8 +12,9 @@
 #include "FastLED.h"
 #include <Adafruit_NeoPixel.h>
 
+
 #define LED_PIN     6
-#define NUMPIXELS  100
+#define NUMPIXELS  52
 Adafruit_NeoPixel strip(NUMPIXELS, LED_PIN, NEO_BGR + NEO_KHZ800); // GRB
 #define LED_TYPE    WS2811
 #define COLOR_ORDER BGR
@@ -49,6 +50,8 @@ const char WIFI_PASS[] = "IoT4onderwijs"; //WiFI password
 WiFiClient wifiClient;
 MQTTClient mqttClient;
 
+
+
 int status = WL_IDLE_STATUS;
 
 // Wia Cloud MQTT params
@@ -62,6 +65,9 @@ char mqttCloudPassword[]   = "try";
 // Topics
 #define pingCommandTopic "mddneon"
 
+
+#include "Ping.h"
+
 /*
 
 
@@ -72,7 +78,7 @@ char mqttCloudPassword[]   = "try";
 
 void setup() {
   Serial.begin(115200);
-  while (!Serial) ; // wait untill serial connection is ready and kickin'
+  //  while (!Serial) ; // wait untill serial connection is ready and kickin'
 
   FastLED.addLeds<LED_TYPE, LED_PIN, COLOR_ORDER>(leds, NUMPIXELS).setCorrection(TypicalLEDStrip);
   strip.begin(); // Initialize pins for output
@@ -83,6 +89,9 @@ void setup() {
   int isconnected = wifi_connect(WIFI_SSID, WIFI_PASS);
   if ( WL_CONNECTED ==  isconnected) {
     on_wifi_success();
+
+    mqttClient.begin(mqttCloudServer, mqttCloudPort, wifiClient);
+    mqttClient.onMessage(messageReceived);
   }
 }
 
@@ -197,24 +206,33 @@ void on_wifi_success() {
 
 void connect_to_mqtt() {
 
-  // You need to set the IP address directly.
-  mqttClient.begin(mqttCloudServer, mqttCloudPort, wifiClient);
 
+  if (!mqttClient.connected()) {
 
-  while (!mqttClient.connect(pingCommandTopic, mqttCloudUsername, mqttCloudPassword)) {
-    Serial.print("*: returnCode=");
-    Serial.print(mqttClient.returnCode());
-    Serial.print(" lastError=");
-    Serial.print(mqttClient.lastError());
-    Serial.println();
-    delay(500);
+    Serial.print("connect_to_mqtt() -> not connected -> connecting" );
+    Serial.print("Connecting as ");
+    Serial.println(mqttCloudUsername);
+    boolean succes = mqttClient.connect(pingCommandTopic, mqttCloudUsername, mqttCloudPassword);
+
+    if (succes) {
+      Serial.println("YESSS we're in the channel");
+      // You need to set the IP address directly.
+
+      mqttClient.subscribe(pingCommandTopic);
+    }
+
+    else {
+      Serial.println("Failed to connect to channel");
+      Serial.print("*: returnCode=");
+      Serial.print(mqttClient.returnCode());
+      Serial.print(" lastError=");
+      Serial.print(mqttClient.lastError());
+      Serial.println();
+      Serial.println("pausing 2 seconds");
+      delay(2000);
+    }
+
   }
-
-  Serial.println("Connected to MQTT");
-
-  mqttClient.onMessage(messageReceived);
-
-  mqttClient.subscribe(pingCommandTopic);
 }
 
 
@@ -229,9 +247,11 @@ void connect_to_mqtt() {
 void loop() {
   mqttClient.loop();
 
-  if (!wifiClient.connected()) {
-    connect_to_mqtt();
-  }
+  //f (!wifiClient.connected()) {
+  connect_to_mqtt();
+  //}
+
+  updatePing();
 
   switch (animationMode) {
 
